@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootNode4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.cocothumb.controller.CustomerOrderFormController">
+   <children>
+      <Label layoutX="42.0" layoutY="21.0" prefHeight="60.0" prefWidth="417.0" text="Customer Order Form" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="8.0">
+         <font>
+            <Font name="Ubuntu Medium Italic" size="40.0" />
+         </font>
+      </Label>
+      <Label layoutX="27.0" layoutY="84.0" onDragDetected="#btnaddtocart" prefHeight="19.0" prefWidth="82.0" text="Order Id:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="86.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="241.0" layoutY="132.0" prefHeight="17.0" prefWidth="121.0" text="Customer Id:" AnchorPane.topAnchor="132.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="30.0" layoutY="224.0" text="Customer Name:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="224.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="242.0" layoutY="320.0" prefHeight="19.0" prefWidth="106.0" text="Item type:" AnchorPane.topAnchor="320.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="419.0" prefHeight="19.0" prefWidth="106.0" text="Unit price:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="419.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="179.0" layoutY="419.0" prefHeight="20.0" prefWidth="90.0" text="Stock qty:" AnchorPane.topAnchor="419.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="336.0" layoutY="419.0" prefHeight="19.0" prefWidth="75.0" text="Buy Qty:" AnchorPane.topAnchor="419.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnAddToCart" buttonType="RAISED" layoutX="690.0" layoutY="525.0" onAction="#btnAddToCartOnAction" prefHeight="33.0" prefWidth="120.0" style="-fx-background-color: #f6b93b;" text="Add to cart" textFill="WHITE" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="690.0" AnchorPane.topAnchor="525.0">
+         <graphic>
+            <ImageView fitHeight="28.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../asserts.icon/shopping-cart.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="bttnPlaseOrder" buttonType="RAISED" layoutX="819.0" layoutY="525.0" onAction="#btnPlaceOrder" prefHeight="34.0" prefWidth="152.0" style="-fx-background-color: #16a085;" text="Place Order" textFill="WHITE" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="819.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="525.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <DatePicker fx:id="lblOrderDate" layoutX="240.0" layoutY="255.0" prefHeight="37.0" prefWidth="200.0" promptText="date" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="255.0" />
+      <TextField fx:id="txtQty" layoutX="326.0" layoutY="450.0" onAction="#txtQtyOnAction" onKeyReleased="#txtQtyOnKeyReleased" onKeyTyped="#txtQtyOnKeyType" prefHeight="35.0" prefWidth="98.0" style="-fx-background-radius: 10;" AnchorPane.topAnchor="450.0">
+         <font>
+            <Font name="System Italic" size="15.0" />
+         </font></TextField>
+      <TextField fx:id="txtOrderId" editable="false" layoutX="108.0" layoutY="82.0" prefHeight="30.0" prefWidth="82.0" style="-fx-background-radius: 10;" AnchorPane.topAnchor="80.0" />
+      <TextField fx:id="txtCustId" editable="false" layoutX="240.0" layoutY="163.0" prefHeight="35.0" prefWidth="200.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="163.0" />
+      <TextField fx:id="txtCustName" editable="false" layoutX="28.0" layoutY="255.0" prefHeight="35.0" prefWidth="200.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="255.0" />
+      <TextField fx:id="txtItemType" editable="false" layoutX="240.0" layoutY="351.0" prefHeight="35.0" prefWidth="200.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="351.0" />
+      <TextField fx:id="txtUnitPrice" editable="false" layoutX="33.0" layoutY="450.0" prefHeight="35.0" prefWidth="140.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="450.0" />
+      <TextField fx:id="txtStockQty" editable="false" layoutX="177.0" layoutY="450.0" prefHeight="35.0" prefWidth="140.0" AnchorPane.topAnchor="450.0" />
+      <JFXButton buttonType="RAISED" layoutX="978.0" layoutY="525.0" onAction="#btnPrintBill" prefHeight="34.0" prefWidth="100.0" style="-fx-background-radius: 10 10 10 10; -fx-background-color: #41B06E;" text="Bill" textFill="#ecf1f5" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="978.0" AnchorPane.topAnchor="525.0">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="395.0" layoutY="143.0" prefHeight="19.0" prefWidth="66.0" text=" Date: " AnchorPane.bottomAnchor="420.0" AnchorPane.leftAnchor="395.0" AnchorPane.rightAnchor="686.0" AnchorPane.topAnchor="143.0">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblOrderCart" layoutX="445.0" layoutY="325.0" prefHeight="139.0" prefWidth="648.0" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="445.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="325.0">
+         <columns>
+            <TableColumn fx:id="colItemCode" prefWidth="76.66668701171875" text="Code" />
+            <TableColumn fx:id="colDescription" prefWidth="115.0" text="Description" />
+            <TableColumn fx:id="colQty" prefWidth="93.0" text="Qty" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="99.0" text="Unit Price" />
+            <TableColumn fx:id="colTotal" minWidth="0.0" prefWidth="92.66668701171875" text="Total" />
+            <TableColumn fx:id="colMethod" minWidth="0.0" prefWidth="102.0" text="Method" />
+            <TableColumn fx:id="colAction" minWidth="0.0" prefWidth="68.0" text="Action" />
+         </columns>
+      </TableView>
+      <Label layoutX="514.0" layoutY="484.0" text="Net Total:" AnchorPane.leftAnchor="514.0" AnchorPane.topAnchor="484.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblNetTotal" layoutX="209.0" layoutY="487.0" prefHeight="27.0" prefWidth="76.0" textFill="#106c9a">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtNetTotal" editable="false" layoutX="604.0" layoutY="474.0" prefHeight="35.0" prefWidth="82.0" style="-fx-background-radius: 10;" AnchorPane.leftAnchor="604.0" AnchorPane.topAnchor="474.0" />
+      <ComboBox fx:id="cmbCustomerNIC" layoutX="27.0" layoutY="163.0" onAction="#cmbCustomerOnAction" prefHeight="35.0" prefWidth="200.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="163.0" />
+      <Label layoutX="29.0" layoutY="132.0" onDragDetected="#btnaddtocart" prefHeight="19.0" prefWidth="131.0" text="Customer NIC:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="132.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cmbItemCode" layoutX="30.0" layoutY="351.0" onAction="#cmbItemOnAction" prefHeight="35.0" prefWidth="200.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="351.0" />
+      <Label layoutX="31.0" layoutY="320.0" onDragDetected="#btnaddtocart" prefHeight="19.0" prefWidth="106.0" text="Item Code:" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="320.0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="646.0" layoutY="134.0" text="Email Address:" AnchorPane.rightAnchor="325.0">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="cmbMethod" layoutX="644.0" layoutY="252.0" prefHeight="35.0" prefWidth="377.0" promptText="Payment Type" AnchorPane.rightAnchor="77.0" />
+      <TextField fx:id="txtEmail" layoutX="642.0" layoutY="167.0" onKeyReleased="#txtEmailOnKeyReleased" onKeyTyped="#txtEmailOnKeyType" prefHeight="35.0" prefWidth="377.0" AnchorPane.rightAnchor="79.0" AnchorPane.topAnchor="167.0" />
+      <ImageView fitHeight="27.0" fitWidth="26.0" layoutX="827.0" layoutY="528.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asserts.icon/online-shop.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="985.0" layoutY="528.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asserts.icon/bill.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

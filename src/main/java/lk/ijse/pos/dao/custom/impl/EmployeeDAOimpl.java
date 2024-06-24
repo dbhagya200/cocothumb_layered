@@ -1,0 +1,110 @@
+package lk.ijse.pos.dao.custom.impl;
+
+import lk.ijse.pos.dao.SQLUtil;
+import lk.ijse.pos.dao.custom.EmployeeDAO;
+import lk.ijse.pos.entity.Employee;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EmployeeDAOimpl implements EmployeeDAO {
+    @Override
+    public boolean save(Employee entity) throws SQLException {
+
+        return SQLUtil.execute("INSERT INTO employee (e_id, e_name,e_jobrole, e_address, e_contact,e_salary, e_email,machine_id)VALUES (?, ?, ?, ?, ?,?,?)",
+                entity.getE_Id(),
+                entity.getE_Name(),
+                entity.getE_jobrole(),
+                entity.getE_Address(),
+                entity.getE_Contact(),
+                entity.getE_Salary(),
+                entity.getE_email(),
+                entity.getMachine_id());
+    }
+
+    @Override
+    public boolean update(Employee entity) throws SQLException {
+        return SQLUtil.execute( "UPDATE employee SET e_name = ?,e_jobrole = ?, e_address = ?," +
+                " e_contact = ?,e_salary = ?,,e_email = ?,machine_id = ? WHERE e_id = ?",
+                entity.getE_Name(),entity.getE_jobrole(),entity.getE_Address(),
+                entity.getE_Contact(),entity.getE_Salary(),entity.getE_email(),
+                entity.getMachine_id(),entity.getE_Id());
+    }
+
+    @Override
+    public Employee searchByNIC(String NIC) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public Employee searchById(String id) throws SQLException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee WHERE e_id = ?",id);
+
+        Employee employee = null;
+
+        if (resultSet.next()) {
+            String e_id = resultSet.getString(1);
+            String e_name = resultSet.getString(2);
+            String e_jobrole = resultSet.getString(3);
+            String e_address = resultSet.getString(4);
+            String e_contact = resultSet.getString(5);
+            double e_salary = Double.parseDouble(resultSet.getString(6));
+            String e_email = resultSet.getString(7);
+            String machine_id = resultSet.getString(8);
+
+
+            employee = new Employee(e_id, e_name,e_jobrole, e_address, e_contact, e_salary,e_email,machine_id);
+        }
+        return employee;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException {
+        return SQLUtil.execute("DELETE FROM employee WHERE e_id = ?",id);
+    }
+
+    @Override
+    public List<Employee> getAll() throws SQLException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee");
+
+        List<Employee> employeeList = new ArrayList<>();
+        while (resultSet.next()) {
+            String e_id = resultSet.getString(1);
+            String e_name = resultSet.getString(2);
+            String e_jobrole = resultSet.getString(3);
+            String e_address = resultSet.getString(4);
+            String e_contact = resultSet.getString(5);
+            double e_salary = Double.parseDouble(resultSet.getString(6));
+            String e_email = resultSet.getString(7);
+            String machine_id = resultSet.getString(8);
+
+            Employee employee = new Employee(e_id, e_name,e_jobrole, e_address, e_contact,e_salary,e_email,machine_id);
+            employeeList.add(employee);
+        }
+        return employeeList;
+    }
+
+    @Override
+    public List<String> getIds() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public List<String> getNIC() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public String currentId() throws SQLException {
+        ResultSet resultSet = SQLUtil.execute("SELECT e_id FROM employee ORDER BY CAST(SUBSTRING(e_id, 2) AS UNSIGNED) DESC LIMIT 1");
+
+        if(resultSet.next()) {
+            return resultSet.getString(1);
+        }
+        return null;
+    }
+}

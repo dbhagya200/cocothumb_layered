@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootNode1" prefHeight="699.0" prefWidth="1394.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.cocothumb.controller.NewDashboardController">
+   <children>
+      <AnchorPane layoutX="-25.0" prefHeight="699.0" prefWidth="276.0" style="-fx-background-color: #2D3250; -fx-background-radius: 30; -fx-border-width: 2;">
+         <children>
+            <AnchorPane fx:id="pp" layoutX="61.0" layoutY="6.0" prefHeight="101.0" prefWidth="159.0" style="-fx-background-color: #fff; -fx-background-radius: 20;" styleClass="pp" stylesheets="@../Style/ButtonChange.css">
+               <children>
+                  <ImageView fitHeight="119.0" fitWidth="128.0" layoutX="16.0" layoutY="-21.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../asserts.icon/logo-removebg-preview.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="32.0" fitWidth="49.0" layoutX="64.0" layoutY="67.0" opacity="0.73" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/coconut.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <JFXButton fx:id="Button" buttonType="RAISED" layoutX="60.0" layoutY="136.0" onAction="#btnemployee" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 30;" styleClass="Button" stylesheets="@../Style/ButtonChange.css" text="Add Employee" textFill="WHITE" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="16.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="47.0" layoutY="135.0" prefHeight="48.0" prefWidth="49.0" style="-fx-background-color: #ffff; -fx-background-radius: 70;" AnchorPane.leftAnchor="44.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="32.0" layoutX="7.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/employees.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <JFXButton fx:id="Button" buttonType="RAISED" layoutX="58.0" layoutY="205.0" onAction="#btncustomer" prefHeight="48.0" prefWidth="201.0" style="-fx-background-radius: 30;" styleClass="Button" stylesheets="@../Style/ButtonChange.css" text="Add Customer" textFill="WHITE" AnchorPane.leftAnchor="58.0" AnchorPane.rightAnchor="16.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="44.0" layoutY="204.0" prefHeight="48.0" prefWidth="49.0" style="-fx-background-color: #ffff; -fx-background-radius: 70;" AnchorPane.leftAnchor="44.0">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="37.0" layoutX="7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/service.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <JFXButton fx:id="Button" buttonType="RAISED" layoutX="61.0" layoutY="276.0" onAction="#btnaddsupplier" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 30;" styleClass="Button" stylesheets="@../Style/ButtonChange.css" text="Add Supplier" textFill="WHITE" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="16.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="44.0" layoutY="275.0" prefHeight="48.0" prefWidth="49.0" style="-fx-background-color: #ffff; -fx-background-radius: 70;" AnchorPane.leftAnchor="44.0">
+               <children>
+                  <ImageView fitHeight="40.0" fitWidth="32.0" layoutX="6.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/supplier(1).png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <JFXButton fx:id="Button" buttonType="RAISED" layoutX="62.0" layoutY="350.0" onAction="#btnaddItems" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 30;" styleClass="Button" stylesheets="@../Style/ButtonChange.css" text="Add Items" textFill="WHITE" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="16.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="44.0" layoutY="349.0" prefHeight="48.0" prefWidth="49.0" style="-fx-background-color: #ffff; -fx-background-radius: 70;" AnchorPane.leftAnchor="44.0">
+               <children>
+                  <ImageView fitHeight="36.0" fitWidth="32.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/shopping-bag.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <JFXButton fx:id="Button" buttonType="RAISED" layoutX="60.0" layoutY="419.0" onAction="#btncustomerorders" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 30;" styleClass="Button" stylesheets="@../Style/ButtonChange.css" text="Customer Orders" textFill="WHITE" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="16.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="35.0" layoutY="418.0" prefHeight="48.0" prefWidth="49.0" style="-fx-background-color: #ffff; -fx-background-radius: 70;" AnchorPane.leftAnchor="35.0">
+               <children>
+                  <ImageView fitHeight="36.0" fitWidth="32.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/order.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <JFXButton fx:id="Button" buttonType="RAISED" layoutX="58.0" layoutY="489.0" onAction="#btnsupplierorders" prefHeight="48.0" prefWidth="200.0" style="-fx-background-radius: 30;" styleClass="Button" stylesheets="@../Style/ButtonChange.css" text="Supplier Orders" textFill="WHITE" AnchorPane.leftAnchor="58.0" AnchorPane.rightAnchor="16.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="37.0" layoutY="488.0" prefHeight="48.0" prefWidth="49.0" style="-fx-background-color: #ffff; -fx-background-radius: 70;" AnchorPane.leftAnchor="37.0">
+               <children>
+                  <ImageView fitHeight="36.0" fitWidth="32.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/all-inclusive.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <JFXButton fx:id="LL" layoutX="82.0" layoutY="611.0" onAction="#logout" prefHeight="38.0" prefWidth="128.0" style="-fx-background-radius: 20;" styleClass="LL" stylesheets="@../Style/ButtonChange.css" text="Log out">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="72.0" layoutY="609.0" onMouseClicked="#onlogout" prefHeight="37.0" prefWidth="37.0" style="-fx-background-color: #ffff; -fx-background-radius: 70;">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="37.0" layoutX="3.0" layoutY="3.0" onMouseClicked="#onlogout" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asserts.icon/switch.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="244.0" layoutY="-3.0" opacity="0.81" prefHeight="86.0" prefWidth="1160.0" style="-fx-background-radius: 0 0 0 0;">
+         <children>
+            <ImageView fitHeight="86.0" fitWidth="1140.0" layoutX="6.0" opacity="0.4" pickOnBounds="true">
+               <image>
+                  <Image url="@../asserts.icon/d98f5e4432c2c9de5418ed4b668faee5.jpeg" />
+               </image>
+            </ImageView>
+            <JFXButton fx:id="bb" buttonType="RAISED" layoutX="924.0" layoutY="20.0" onAction="#btnHome" prefHeight="35.0" prefWidth="70.0" style="-fx-background-color: #98DED9; -fx-background-radius: 10;" styleClass="bb" stylesheets="@../Style/ButtonChange.css" text="Home">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="bb" buttonType="RAISED" layoutX="1010.0" layoutY="20.0" onAction="#btnexit" prefHeight="35.0" prefWidth="70.0" style="-fx-background-color: #D49A89; -fx-background-radius: 10;" styleClass="bb" stylesheets="@../Style/ButtonChange.css" text="Exit">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </JFXButton>
+            <Line endX="26.666671752929688" endY="80.0" layoutX="-6.0" startX="26.666671752929688" startY="23.292892456054688" stroke="#294051" strokeWidth="2.0" />
+            <JFXButton fx:id="LL" layoutX="751.0" layoutY="19.0" onAction="#change" prefHeight="38.0" prefWidth="159.0" style="-fx-background-radius: 20; -fx-background-color: #9BE3DE;" styleClass="LL" stylesheets="@../Style/ButtonChange.css" text="Change Password">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="customRoot" layoutX="256.0" layoutY="105.0" prefHeight="570.0" prefWidth="978.0" style="-fx-background-radius: 30 0 0 30;">
+         <children>
+            <AnchorPane fx:id="tabPane" layoutX="9.0" prefHeight="576.0" prefWidth="1094.0">
+               <children>
+                  <ImageView fitHeight="576.0" fitWidth="1098.0" layoutX="1.0" opacity="0.76" pickOnBounds="true">
+                     <image>
+                        <Image url="@../asserts.icon/earth-sunset-ocean-palm-tree-wallpaper-preview.jpg" />
+                     </image>
+                  </ImageView>
+                  <AnchorPane fx:id="pp" layoutX="207.0" layoutY="104.0" prefHeight="201.0" prefWidth="119.0" style="-fx-background-color: #ffff; -fx-background-radius: 25;" styleClass="pp" stylesheets="@../Style/ButtonChange.css">
+                     <children>
+                        <Label layoutX="9.0" layoutY="53.0" prefHeight="21.0" prefWidth="110.0" text="Employee " AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="4.0">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblEmployeeCount" layoutX="15.0" layoutY="10.0" opacity="0.81" text="15" textFill="#030000">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="23.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../asserts.icon/team.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="13.0" layoutY="75.0" prefHeight="21.0" prefWidth="71.0" text="Count">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="pp" layoutX="19.0" layoutY="101.0" prefHeight="201.0" prefWidth="119.0" style="-fx-background-color: #ffff; -fx-background-radius: 25;" styleClass="pp" stylesheets="@../Style/ButtonChange.css">
+                     <children>
+                        <Label layoutX="19.0" layoutY="59.0" prefHeight="21.0" prefWidth="57.0" text="Item ">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblItemCount" layoutX="15.0" layoutY="15.0" opacity="0.8" text="15" textFill="#030000">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="72.0" fitWidth="72.0" layoutX="20.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../asserts.icon/packaging.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="8.0" layoutY="80.0" prefHeight="21.0" prefWidth="71.0" text=" Count">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="pp" layoutX="206.0" layoutY="342.0" prefHeight="201.0" prefWidth="119.0" style="-fx-background-color: #ffff; -fx-background-radius: 25;" styleClass="pp" stylesheets="@../Style/ButtonChange.css">
+                     <children>
+                        <Label layoutX="19.0" layoutY="60.0" prefHeight="21.0" prefWidth="57.0" text="Total ">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblOrdersCount" layoutX="15.0" layoutY="16.0" opacity="0.8" text="15" textFill="#030000">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="65.0" fitWidth="71.0" layoutX="23.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../asserts.icon/checklist.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="14.0" layoutY="81.0" prefHeight="21.0" prefWidth="71.0" text="Orders">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <Line endX="86.66665649414062" endY="275.6666564941406" layoutX="84.0" layoutY="19.0" startX="86.66665649414062" startY="95.66667175292969" stroke="#294051" strokeWidth="2.0" />
+                  <Line endX="146.0" endY="276.66668701171875" layoutX="26.0" layoutY="67.0" startX="146.0" startY="466.33331298828125" stroke="#294051" strokeWidth="2.0" />
+                  <Line endX="-228.66668701171875" endY="423.0" layoutX="547.0" layoutY="-102.0" startX="-522.0" startY="423.0" stroke="#294051" strokeWidth="2.0" />
+                  <AnchorPane fx:id="pp" layoutX="22.0" layoutY="341.0" prefHeight="201.0" prefWidth="119.0" style="-fx-background-color: #ffff; -fx-background-radius: 25;" styleClass="pp" stylesheets="@../Style/ButtonChange.css">
+                     <children>
+                        <Label layoutX="4.0" layoutY="56.0" prefHeight="21.0" prefWidth="110.0" text="Customer " AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="-4.0">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblCustomerCount" layoutX="14.0" layoutY="14.0" opacity="0.8" text="15" textFill="#030000">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="72.0" fitWidth="72.0" layoutX="19.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="28.0">
+                           <image>
+                              <Image url="@../asserts.icon/customer.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="15.0" layoutY="75.0" prefHeight="21.0" prefWidth="71.0" text="Count">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <Label layoutX="239.0" layoutY="17.0" prefHeight="49.0" prefWidth="656.0" text="Welcome to CoCo Thumb !!!" textFill="WHITE" underline="true">
+                     <font>
+                        <Font name="System Bold Italic" size="40.0" />
+                     </font>
+                  </Label>
+                  <Pane layoutX="375.0" layoutY="80.0" prefHeight="463.0" prefWidth="721.0" style="-fx-background-color: #0000;">
+                     <children>
+                        <Label fx:id="lblTime" layoutX="46.0" layoutY="196.0" opacity="0.81" prefHeight="119.0" prefWidth="616.0" text="Time" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="70.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbldate1" layoutX="35.0" layoutY="30.0" opacity="0.8" prefHeight="144.0" prefWidth="680.0" text="Date" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold Italic" size="61.0" />
+                           </font>
+                        </Label>
+                     </children></Pane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
