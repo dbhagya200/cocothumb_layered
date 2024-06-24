@@ -1,6 +1,7 @@
 package lk.ijse.pos.bo;
 
 import lk.ijse.pos.bo.custom.impl.CustomerBOimpl;
+import lk.ijse.pos.bo.custom.impl.EmployeeBOimpl;
 
 public class BOFactory {
     private static BOFactory boFactory;
@@ -11,7 +12,7 @@ public class BOFactory {
     }
 
     public enum BOTypes{
-        CUSTOMER
+        CUSTOMER,EMPLOYEE
     }
 
     //Object creation logic for BO objects
@@ -19,6 +20,8 @@ public class BOFactory {
         switch (types){
             case CUSTOMER:
                 return new CustomerBOimpl();
+            case EMPLOYEE:
+                //return new EmployeeBOimpl();
             default:
                 return null;
         }

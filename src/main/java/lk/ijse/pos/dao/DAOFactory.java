@@ -1,6 +1,7 @@
 package lk.ijse.pos.dao;
 
 import lk.ijse.pos.dao.custom.impl.CustomerDAOimpl;
+import lk.ijse.pos.dao.custom.impl.EmployeeDAOimpl;
 
 public class DAOFactory {
     private static DAOFactory daoFactory;
@@ -13,13 +14,15 @@ public class DAOFactory {
     }
 
     public enum DAOTypes {
-        CUSTOMER
+        EMPLOYEE, CUSTOMER
     }
 
     public SuperDAO getDAO(DAOTypes types){
         switch (types) {
             case CUSTOMER:
                 return new CustomerDAOimpl();
+            case EMPLOYEE:
+                return new EmployeeDAOimpl();
             default:
                 return null;
         }

@@ -93,10 +93,6 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return null;
     }
 
-    @Override
-    public List<String> getNIC() throws SQLException {
-        return null;
-    }
 
     @Override
     public String currentId() throws SQLException {

@@ -67,10 +67,6 @@ public class MachineDAOimpl implements MachineDAO {
         return null;
     }
 
-    @Override
-    public List<String> getNIC() throws SQLException {
-        return null;
-    }
 
     @Override
     public String currentId() throws SQLException {
