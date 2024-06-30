@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootNode1" prefHeight="699.0" prefWidth="1394.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.cocothumb.controller.NewDashboardController">
+<AnchorPane fx:id="rootNode1" prefHeight="699.0" prefWidth="1394.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.cocothumbLayered.controller.NewDashboardController">
    <children>
       <AnchorPane layoutX="-25.0" prefHeight="699.0" prefWidth="276.0" style="-fx-background-color: #2D3250; -fx-background-radius: 30; -fx-border-width: 2;">
          <children>
