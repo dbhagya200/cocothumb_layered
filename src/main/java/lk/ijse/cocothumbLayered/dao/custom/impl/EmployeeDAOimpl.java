@@ -13,7 +13,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
     @Override
     public boolean add(Employee entity) throws SQLException {
 
-        return SQLUtil.execute("INSERT INTO employee (e_id, e_name,e_jobrole, e_address, e_contact,e_salary, e_email,machine_id)VALUES (?, ?, ?, ?, ?,?,?)",
+        return SQLUtil.execute("INSERT INTO employee (e_id, e_name,e_jobrole, e_address, e_contact,e_salary, e_email,machine_id)VALUES (?, ?, ?, ?, ?,?,?,?)",
                 entity.getE_Id(),
                 entity.getE_Name(),
                 entity.getE_jobrole(),
@@ -92,26 +92,16 @@ public class EmployeeDAOimpl implements EmployeeDAO {
     }
 
 
-   /* @Override
-    public String currentId() throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT e_id FROM employee ORDER BY CAST(SUBSTRING(e_id, 2) AS UNSIGNED) DESC LIMIT 1");
-
-        if(resultSet.next()) {
-            return resultSet.getString(1);
-        }
-        return null;
-    }*/
 
     @Override
     public String generateNewID() throws SQLException {
-        ResultSet rst = SQLUtil.execute("SELECT e_id FROM employee ORDER BY e_id DESC LIMIT 1;");
+        ResultSet rst = SQLUtil.execute("SELECT e_id FROM employee ORDER BY CAST(SUBSTRING(e_id, 3) AS UNSIGNED) DESC LIMIT 1");
         if (rst.next()) {
-            String id = rst.getString("e_id");
-            int newId = Integer.parseInt(id.replace("E00-", "")) + 1;
-            return String.format("E00-%03d", newId);
-        } else {
-            return "E00-001";
+            String[] split = rst.getString(1).split("E#");
+            int id = Integer.parseInt(split[1],10);
+            return "E#" + String.format("%04d", ++id);
         }
+        return "E#0001";
     }
 
     @Override

@@ -13,12 +13,14 @@ public class CustomerDAOimpl implements CustomerDAO {
 
     @Override
     public boolean add(Customer entity) throws SQLException {
-        return SQLUtil.execute("INSERT INTO customer (cust_id,cust_NIC,cust_name, cust_address, cust_contact,user_id) VALUES (?,?,?,?,?,?)",entity.getCust_id(),entity.getCust_NIC(),entity.getCust_name(),entity.getCust_address(),entity.getCust_contact(),entity.getUser_id());
+        return SQLUtil.execute("INSERT INTO customer (cust_id,cust_NIC,cust_name, cust_address, cust_contact,user_id) VALUES (?,?,?,?,?,?)",
+                entity.getCust_id(),entity.getCust_NIC(),entity.getCust_name(),
+                entity.getCust_address(),entity.getCust_contact(),entity.getUser_id());
     }
 
     @Override
     public boolean update(Customer entity) throws SQLException {
-        return SQLUtil.execute("UPDATE Customer SET cust_NIC,cust_name=?, cust_address=?,cust_contact=? WHERE id=?",
+        return SQLUtil.execute("UPDATE customer SET cust_NIC=?,cust_name=?, cust_address=?,cust_contact=? WHERE cust_id=?",
                 entity.getCust_NIC(),entity.getCust_name(),entity.getCust_address(),
                 entity.getCust_contact(),entity.getCust_id());
     }
@@ -103,29 +105,17 @@ public class CustomerDAOimpl implements CustomerDAO {
         return nicList;
     }
 
- /*   @Override
-    public String currentId() throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT cust_id FROM customer ORDER BY CAST(SUBSTRING(cust_id, 2) AS UNSIGNED) DESC LIMIT 1");
-
-        if(resultSet.next()) {
-            return resultSet.getString(1);
-        }
-        return null;
-    }*/
-
     @Override   
     public String generateNewID() throws SQLException {
-        ResultSet rst = SQLUtil.execute("SELECT cust_id FROM customer ORDER BY CAST(SUBSTRING(cust_id, 2) AS UNSIGNED) DESC LIMIT 1");
-
-        // If there is a result, increment the number part of the ID and format it, otherwise start with C00001
+        ResultSet rst = SQLUtil.execute("SELECT cust_id FROM customer ORDER BY CAST(SUBSTRING(cust_id, 3) AS UNSIGNED) DESC LIMIT 1");
         if (rst.next()) {
-            // Extract the numerical part of the ID, increment it, and format it with leading zeros
-            int lastIdNum = Integer.parseInt(rst.getString("cust_id").replace("C00", ""));
-            return String.format("C00%03d", lastIdNum + 1);
-        } else {
-            // If there are no existing IDs, start with C00001
-            return "C00001";
+            String[] split = rst.getString(1).split("C#");
+            int id = Integer.parseInt(split[1],10);
+            return "C#" + String.format("%04d", ++id);
         }
+        return "C#0001";
+
+
     }
 
     @Override

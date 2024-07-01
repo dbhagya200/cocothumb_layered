@@ -1,5 +1,6 @@
 package lk.ijse.cocothumbLayered.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +24,9 @@ import java.util.List;
 public class CustomerFormController {
 
 
+    public JFXButton btnUpdate;
+    public JFXButton btnSave;
+    public JFXButton btnDelete;
     @FXML
     private TableColumn<?, ?> colAddress;
     @FXML
@@ -69,16 +73,17 @@ public class CustomerFormController {
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     @FXML
-    void btnClear(ActionEvent event) {
+    void btnClear(ActionEvent event) throws SQLException {
         txtId1.setText("");
         txtNIC.setText("");
         txtName.setText("");
         txtAddress.setText("");
         txtContact.setText("");
+
     }
 
     @FXML
-    void btnSave(ActionEvent event) throws ClassNotFoundException {
+    void btnSave(ActionEvent event) throws ClassNotFoundException, SQLException {
        String cust_id = txtId.getText();
         String cust_NIC = txtNIC.getText();
         String cust_name = txtName.getText();
@@ -108,6 +113,8 @@ public class CustomerFormController {
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
                 }
+                initialize();
+                btnClear(event);
 
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
@@ -123,7 +130,7 @@ public class CustomerFormController {
     }
 
     @FXML
-    void btnUpdate(ActionEvent event) throws ClassNotFoundException {
+    void btnUpdate(ActionEvent event) throws ClassNotFoundException, SQLException {
         String cust_id = txtId.getText();
         String cust_NIC = txtNIC.getText();
         String cust_name = txtName.getText();
@@ -131,28 +138,25 @@ public class CustomerFormController {
         String cust_contact = txtContact.getText();
         String user_id = NewLoginController.getUserId();
 
-        try {
-            if (!existCustomer(cust_id)) {
-                new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + cust_id).show();
+        if (isValid()){
+
+            try {
+                boolean isUpdated = customerBO.updateCustomer(new CustomerDTO(cust_id, cust_NIC, cust_name,
+                        cust_address, cust_contact, user_id));
+
+                if (isUpdated) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "customer updated!").show();
+                }
+                initialize();
+                btnClear(event);
+
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-
-            //Update Customer
-            customerBO.updateCustomer(new CustomerDTO(cust_id, cust_NIC,
-                    cust_name, cust_address, cust_contact, user_id));
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + cust_id + e.getMessage()).show();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            CustomerTm selectedItem = new CustomerTm(cust_id, cust_NIC, cust_name,
+                    cust_address, cust_contact);
+            System.out.println("selectedItem = " + selectedItem);
         }
-
-        CustomerTm selectedCustomer = tblCustomer.getSelectionModel().getSelectedItem();
-        selectedCustomer.setCust_id(cust_id);
-        selectedCustomer.setCust_NIC(cust_NIC);
-        selectedCustomer.setCust_name(cust_name);
-        selectedCustomer.setCust_address(cust_address);
-        selectedCustomer.setCust_contact(cust_contact);
-        tblCustomer.refresh();
 
         initialize();
         btnClear(event);
@@ -181,7 +185,7 @@ public class CustomerFormController {
 
 
     @FXML
-    void btnDelete(ActionEvent event) throws ClassNotFoundException {
+    void btnDelete(ActionEvent event) throws ClassNotFoundException, SQLException {
 
         String cust_id = txtId.getText();
 
@@ -209,28 +213,25 @@ public class CustomerFormController {
         loadCustomerTable();
         generateNewId();
 
+        tblCustomer.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+
+            if (newValue != null) {
+                txtId.setText(newValue.getCust_id());
+                txtNIC.setText(newValue.getCust_NIC());
+                txtName.setText(newValue.getCust_name());
+                txtAddress.setText(newValue.getCust_address());
+                txtContact.setText(newValue.getCust_contact());
+
+                txtId.setDisable(false);
+                txtNIC.setDisable(false);
+                txtName.setDisable(false);
+                txtAddress.setDisable(false);
+                txtContact.setDisable(false);
+            }
+        });
 
     }
-
- /*   private void loadNextCustomerId() {
-        try {
-            String currentId = customerBO.currentCustomerId();
-            String nextId = nextId(currentId);
-
-            txtId.setText(nextId);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String nextId(String currentId) {
-        if (currentId != null) {
-            String[] split = currentId.split("C");
-            int id = Integer.parseInt(split[1],10);
-            return "C" + String.format("C00-%03d", ++id);
-        }
-        return "C00-001";
-    }*/
 
     private void generateNewId() throws ClassNotFoundException {
         try {

@@ -41,11 +41,11 @@
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="891.0" layoutY="23.0" onAction="#btnUpdate" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #82ccdd;" text="Update" AnchorPane.bottomAnchor="528.0" AnchorPane.leftAnchor="891.0" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="23.0">
+      <JFXButton fx:id="btnUpdate" buttonType="RAISED" layoutX="891.0" layoutY="23.0" onAction="#btnUpdate" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #82ccdd;" text="Update" AnchorPane.bottomAnchor="528.0" AnchorPane.leftAnchor="891.0" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="23.0">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="804.0" layoutY="23.0" onAction="#btnSave" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #b8e994;" text="Save" AnchorPane.bottomAnchor="528.0" AnchorPane.leftAnchor="804.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="23.0">
+      <JFXButton fx:id="btnSave" buttonType="RAISED" layoutX="804.0" layoutY="23.0" onAction="#btnSave" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #b8e994;" text="Save" AnchorPane.bottomAnchor="528.0" AnchorPane.leftAnchor="804.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="23.0">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font></JFXButton>
@@ -65,7 +65,7 @@
             <Font name="System Bold Italic" size="14.0" />
          </font>
       </Label>
-      <JFXButton buttonType="RAISED" layoutX="979.0" layoutY="21.0" onAction="#btnDelete" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #fab1a0;" text="Delete" AnchorPane.bottomAnchor="528.0" AnchorPane.leftAnchor="979.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="23.0">
+      <JFXButton fx:id="btnDelete" buttonType="RAISED" layoutX="979.0" layoutY="21.0" onAction="#btnDelete" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #fab1a0;" text="Delete" AnchorPane.bottomAnchor="528.0" AnchorPane.leftAnchor="979.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="23.0">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font></JFXButton>

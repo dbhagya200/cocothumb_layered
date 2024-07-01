@@ -27,7 +27,6 @@ import lk.ijse.cocothumbLayered.view.tdm.EmployeeTm;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static lk.ijse.cocothumbLayered.controller.UserFormController.*;
@@ -95,14 +94,14 @@ public class EmployeeFormController {
     }
 
     @FXML
-    void btnClear(ActionEvent event) {
+    void btnClear(ActionEvent event) throws SQLException {
         txtId1.setText("");
         txtName.setText("");
         txtAddress.setText("");
         txtContact.setText("");
         txtSalary.setText("");
         txtEmail.setText("");
-        generateNewId();
+        employeeBO.generateEmployeeNewID();
 
     }
 
@@ -118,7 +117,7 @@ public class EmployeeFormController {
     }
 
     @FXML
-    void btnSave(ActionEvent event) throws IOException, SQLException {
+    void btnSave(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         e_id = txtId.getText();
         String e_name = txtName.getText();
         String e_jobrole = cmbjobrole.getValue().toString();
@@ -128,7 +127,8 @@ public class EmployeeFormController {
         String e_email = txtEmail.getText();
         String machine_id = AddMachineController.getMachineId();
 
-if (e_jobrole.equals("Manager")||e_jobrole.equals("Assistant")){
+
+    if (e_jobrole.equals("Manager")||e_jobrole.equals("Assistant")){
     userBO.generateUserNewID();
     txtUserId.setText(String.valueOf(UserFormController.txtUserId));
     txtUserName.setText(EmployeeFormController.getE_id());
@@ -138,7 +138,7 @@ if (e_jobrole.equals("Manager")||e_jobrole.equals("Assistant")){
     UserFormController.txtEmpId.setText(e_id);
 
 
-}
+    }
          if (isValid()) {
 
 
@@ -179,33 +179,20 @@ if (e_jobrole.equals("Manager")||e_jobrole.equals("Assistant")){
             btnClear(event);
 
     }
-    private String generateNewId() {
+    private void generateNewId() throws ClassNotFoundException {
         try {
-            //Generate New ID
-            return employeeBO.generateEmployeeNewID();
+            String currentId = employeeBO.generateEmployeeNewID();
+            System.out.println("employeeBO eke id ek "+currentId);
+
+            txtId.setText(currentId);
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to generate a new id " + e.getMessage()).show();
+            throw new RuntimeException(e);
         }
 
-
-        if (tblEmployee.getItems().isEmpty()) {
-            return "E00-001";
-        } else {
-            String id = getLastEmployeeId();
-            int newId = Integer.parseInt(id.replace("E", "")) + 1;
-            return String.format("E00-%03d", newId);
-        }
-
-    }
-
-    private String getLastEmployeeId() {
-        List<EmployeeTm> tempEmployeesList = new ArrayList<>(tblEmployee.getItems());
-        Collections.sort(tempEmployeesList, (o1, o2) -> o1.getE_id().compareTo(o2.getE_id()));
-        return tempEmployeesList.get(tempEmployeesList.size() - 1).getE_id();
     }
 
     @FXML
-    void btnUpdate(ActionEvent event) throws SQLException {
+    void btnUpdate(ActionEvent event) throws SQLException, ClassNotFoundException {
         String e_id = txtId.getText();
         String e_name = txtName.getText();
         String e_jobrole= cmbjobrole.getValue().toString();
@@ -214,16 +201,25 @@ if (e_jobrole.equals("Manager")||e_jobrole.equals("Assistant")){
         double e_salary = Double.parseDouble(txtSalary.getText());
         String e_email = txtEmail.getText();
         String machine_id = AddMachineController.getMachineId();
-    if (isValid()) {
-    Employee employee = new Employee(e_id, e_name,e_jobrole, e_address, e_contact,e_salary,e_email,machine_id);
 
-    boolean isUpdated = employeeBO.updateEmployee(new EmployeeDTO(e_id, e_name, e_jobrole,
-            e_address, e_contact, e_salary, e_email, machine_id));
-    if (isUpdated) {
-        new Alert(Alert.AlertType.CONFIRMATION, "employee updated!").show();
-         }else {
-        new Alert(Alert.AlertType.ERROR,"Failed to update the customer " );
-    }
+    if (isValid()) {
+        try {
+
+            boolean isUpdated = employeeBO.updateEmployee(new EmployeeDTO(e_id, e_name, e_jobrole,
+                    e_address, e_contact, e_salary, e_email, machine_id));
+            if (isUpdated) {
+                new Alert(Alert.AlertType.CONFIRMATION, "employee updated!").show();
+                initialize();
+                btnClear(event);
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to update the customer ");
+            }
+        }catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+        EmployeeTm selectedItem = new EmployeeTm(e_id, e_name, e_jobrole,
+                e_address, e_contact, e_salary, e_email);
+        System.out.println("selectedItem = " + selectedItem);
     }
         initialize();
         btnClear(event);
@@ -244,12 +240,34 @@ if (e_jobrole.equals("Manager")||e_jobrole.equals("Assistant")){
         }
     }
 
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, ClassNotFoundException {
         this.employeeList = getAllEmployees();
         setEmployeeValue();
         loadEmployeeTable();
+        generateNewId();
         comboJob();
 
+        tblEmployee.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+
+            if (newValue != null) {
+                txtId.setText(newValue.getE_id());
+                txtName.setText(newValue.getE_name());
+                txtAddress.setText(newValue.getE_address());
+                txtContact.setText(newValue.getE_contact());
+                txtEmail.setText(newValue.getE_email());
+                txtSalary.setText(String.valueOf(newValue.getE_salary()));
+                cmbjobrole.setValue(JobRole.valueOf(newValue.getE_jobrole()));
+
+                txtId.setDisable(false);
+                txtName.setDisable(false);
+                txtAddress.setDisable(false);
+                txtContact.setDisable(false);
+                txtEmail.setDisable(false);
+                txtSalary.setDisable(false);
+                cmbjobrole.setDisable(false);
+            }
+        });
 
     }
 
@@ -307,11 +325,13 @@ if (e_jobrole.equals("Manager")||e_jobrole.equals("Assistant")){
 
 
 
-    public void btnDelete(ActionEvent actionEvent) throws SQLException {
-        String e_id = txtId.getText();
+    public void btnDelete(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
 
         try {
-            boolean isDeleted = employeeBO.deleteEmployee(e_id);
+            String id = tblEmployee.getSelectionModel().getSelectedItem().getE_id();
+            boolean isDeleted = employeeBO.deleteEmployee(id);
+            tblEmployee.getItems().remove(tblEmployee.getSelectionModel().getSelectedItem());
+            tblEmployee.getSelectionModel().clearSelection();
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "employee deleted!").show();
             }
