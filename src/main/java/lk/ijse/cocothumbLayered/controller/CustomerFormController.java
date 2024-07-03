@@ -73,12 +73,13 @@ public class CustomerFormController {
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     @FXML
-    void btnClear(ActionEvent event) throws SQLException {
-        txtId1.setText("");
+    void btnClear(ActionEvent event) throws SQLException, ClassNotFoundException {
+        txtId.setText("");
         txtNIC.setText("");
         txtName.setText("");
         txtAddress.setText("");
         txtContact.setText("");
+        generateNewId();
 
     }
 
@@ -187,7 +188,7 @@ public class CustomerFormController {
     @FXML
     void btnDelete(ActionEvent event) throws ClassNotFoundException, SQLException {
 
-        String cust_id = txtId.getText();
+        txtId.getText();
 
         try {
             String id = tblCustomer.getSelectionModel().getSelectedItem().getCust_id();
@@ -207,8 +208,8 @@ public class CustomerFormController {
         initialize();
         btnClear(event);
     }
-    public void initialize() throws ClassNotFoundException {
-        this.customerList = getAllCustomers();
+    public void initialize() throws ClassNotFoundException, SQLException {
+        this.customerList = customerBO.getAllCustomers();
         setCustomerValue();
         loadCustomerTable();
         generateNewId();

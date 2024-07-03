@@ -94,14 +94,15 @@ public class EmployeeFormController {
     }
 
     @FXML
-    void btnClear(ActionEvent event) throws SQLException {
-        txtId1.setText("");
+    void btnClear(ActionEvent event) throws SQLException, ClassNotFoundException {
+        txtId.setText("");
         txtName.setText("");
         txtAddress.setText("");
         txtContact.setText("");
         txtSalary.setText("");
         txtEmail.setText("");
-        employeeBO.generateEmployeeNewID();
+        cmbjobrole.setValue(null);
+        generateNewId();
 
     }
 

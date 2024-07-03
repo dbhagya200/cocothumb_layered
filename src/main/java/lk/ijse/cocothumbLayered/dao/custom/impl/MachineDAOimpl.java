@@ -66,26 +66,15 @@ public class MachineDAOimpl implements MachineDAO {
     }
 
 
- /*   @Override
-    public String currentId() throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT machine_id FROM machine ORDER BY CAST(SUBSTRING(machine_id, 2) AS UNSIGNED) DESC LIMIT 1");
-
-        if(resultSet.next()) {
-            return resultSet.getString(1);
-        }
-        return null;
-    }*/
-
     @Override
     public String generateNewID() throws SQLException {
         ResultSet rst = SQLUtil.execute("SELECT machine_id FROM machine ORDER BY machine_id DESC LIMIT 1;");
         if (rst.next()) {
-            String id = rst.getString("machine_id");
-            int newId = Integer.parseInt(id.replace("#00-", "")) + 1;
-            return String.format("#00-%03d", newId);
-        } else {
-            return "#00-001";
+            String[] split = rst.getString(1).split("M#");
+            int id = Integer.parseInt(split[1],10);
+            return "M#" + String.format("%04d", ++id);
         }
+        return "M#0001";
     }
 
     @Override

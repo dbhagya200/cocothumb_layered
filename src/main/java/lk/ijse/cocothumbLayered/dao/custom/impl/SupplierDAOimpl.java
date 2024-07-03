@@ -81,26 +81,16 @@ public class SupplierDAOimpl implements SupplierDAO {
     }
 
 
- /*   @Override
-    public String currentId() throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT supp_id FROM supplier ORDER BY CAST(SUBSTRING(supp_id, 2) AS UNSIGNED) DESC LIMIT 1");
-
-        if(resultSet.next()) {
-            return resultSet.getString(1);
-        }
-        return null;
-    }*/
 
     @Override
     public String generateNewID() throws SQLException {
         ResultSet rst = SQLUtil.execute("SELECT supp_id FROM supplier ORDER BY supp_id DESC LIMIT 1;");
         if (rst.next()) {
-            String id = rst.getString("supp_id");
-            int newId = Integer.parseInt(id.replace("S00-", "")) + 1;
-            return String.format("S00-%03d", newId);
-        } else {
-            return "S00-001";
+            String[] split = rst.getString(1).split("S#");
+            int id = Integer.parseInt(split[1],10);
+            return "S#" + String.format("%04d", ++id);
         }
+        return "S#0001";
     }
 
     @Override

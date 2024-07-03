@@ -27,7 +27,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
     @Override
     public boolean update(Employee entity) throws SQLException {
         return SQLUtil.execute( "UPDATE employee SET e_name = ?,e_jobrole = ?, e_address = ?," +
-                " e_contact = ?,e_salary = ?,,e_email = ?,machine_id = ? WHERE e_id = ?",
+                " e_contact = ?,e_salary = ?,e_email = ?,machine_id = ? WHERE e_id = ?",
                 entity.getE_Name(),entity.getE_jobrole(),entity.getE_Address(),
                 entity.getE_Contact(),entity.getE_Salary(),entity.getE_email(),
                 entity.getMachine_id(),entity.getE_Id());

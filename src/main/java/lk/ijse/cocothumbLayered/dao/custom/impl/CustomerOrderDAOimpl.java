@@ -2,34 +2,67 @@ package lk.ijse.cocothumbLayered.dao.custom.impl;
 
 import lk.ijse.cocothumbLayered.dao.SQLUtil;
 import lk.ijse.cocothumbLayered.dao.custom.CustomerOrderDAO;
-import lk.ijse.cocothumbLayered.entity.Orders;
+import lk.ijse.cocothumbLayered.dto.OrdersDTO;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class CustomerOrderDAOimpl implements CustomerOrderDAO {
- /*   @Override
-    public String currentId() throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT order_id FROM orders ORDER BY CAST(SUBSTRING(order_id, 2) AS UNSIGNED) DESC LIMIT 1");
-
-        if(resultSet.next()) {
-            return resultSet.getString(1);
-        }
-        return null;
-    }*/
 
 
     @Override
-    public boolean save(Orders orders) throws SQLException {
+    public boolean add(OrdersDTO entity) throws SQLException {
         return SQLUtil.execute("INSERT INTO orders(order_id,cust_NIC ,cust_id,user_id,date,) VALUES(?, ?, ?,?,?)",
-                orders.getOrder_id(),orders.getCust_NIC(),
-                orders.getCust_id(),orders.getUser_id(),
-                orders.getOrder_date());
+                entity.getOrder_id(),entity.getCust_NIC(),
+                entity.getCust_id(),entity.getUser_id(),
+                entity.getOrder_date());
+    }
+
+    @Override
+    public boolean update(OrdersDTO entity) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public OrdersDTO searchByNIC(String NIC) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public OrdersDTO searchById(String id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public List<OrdersDTO> getAll() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public List<String> getIds() throws SQLException {
+        return null;
     }
 
     @Override
     public String generateNewID() throws SQLException {
         ResultSet rst = SQLUtil.execute("SELECT order_id FROM `Orders` ORDER BY order_id DESC LIMIT 1;");
-        return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("order_id").replace("OID-", "")) + 1)) : "OID-001";
+        if (rst.next()) {
+            String[] split = rst.getString(1).split("O#");
+            int id = Integer.parseInt(split[1],10);
+            return "O#" + String.format("%04d", ++id);
+        }
+        return "O#0001";
+    }
 
+    @Override
+    public boolean exist(String id) throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute("SELECT order_id FROM `Orders` WHERE order_id=?",id);
+        return rst.next();
     }
 }

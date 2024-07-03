@@ -81,26 +81,15 @@ public class ItemDAOimpl implements ItemDAO {
     }
 
 
- /*   @Override
-    public String currentId() throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT item_code FROM item ORDER BY CAST(SUBSTRING(item_code, 2) AS UNSIGNED) DESC LIMIT 1");
-
-        if(resultSet.next()) {
-            return resultSet.getString(1);
-        }
-        return null;
-    }*/
-
     @Override
     public String generateNewID() throws SQLException {
-        ResultSet rst = SQLUtil.execute("SELECT item_code FROM item ORDER BY id DESC LIMIT 1;");
+        ResultSet rst = SQLUtil.execute("SELECT item_code FROM item ORDER BY item_code DESC LIMIT 1;");
         if (rst.next()) {
-            String id = rst.getString("item_code");
-            int newId = Integer.parseInt(id.replace("i00-", "")) + 1;
-            return String.format("i00-%03d", newId);
-        } else {
-            return "i00-001";
+            String[] split = rst.getString(1).split("i#");
+            int id = Integer.parseInt(split[1],10);
+            return "i#" + String.format("%04d", ++id);
         }
+        return "i#0001";
     }
 
     @Override

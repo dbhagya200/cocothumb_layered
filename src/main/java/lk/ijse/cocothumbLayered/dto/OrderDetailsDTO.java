@@ -16,4 +16,6 @@ public class OrderDetailsDTO {
     private double amount;
     private String pay_method;
     private String email;
+
+
 }

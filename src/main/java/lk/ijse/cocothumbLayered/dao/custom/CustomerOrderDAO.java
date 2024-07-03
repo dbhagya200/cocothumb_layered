@@ -1,12 +1,10 @@
 package lk.ijse.cocothumbLayered.dao.custom;
 
-import lk.ijse.cocothumbLayered.dao.SuperDAO;
-import lk.ijse.cocothumbLayered.entity.Orders;
+import lk.ijse.cocothumbLayered.dao.CrudDAO;
+import lk.ijse.cocothumbLayered.dto.OrdersDTO;
 
 import java.sql.SQLException;
 
-public interface CustomerOrderDAO extends SuperDAO {
-    //public String currentId() throws SQLException;
-    public boolean save(Orders orders) throws SQLException;
+public interface CustomerOrderDAO extends CrudDAO<OrdersDTO> {
     String generateNewID() throws SQLException;
 }

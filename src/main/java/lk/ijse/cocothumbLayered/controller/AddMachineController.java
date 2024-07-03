@@ -18,7 +18,6 @@ import lk.ijse.cocothumbLayered.view.tdm.MachineTm;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AddMachineController {
@@ -56,7 +55,7 @@ public class AddMachineController {
 
     MachineBO machineBO = (MachineBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.MACHINE);
 
-    public void clearData(){
+    public void clearData() throws ClassNotFoundException {
         txtId.setText("");
         txtBrandName.setText("");
         generateNewId();
@@ -64,11 +63,10 @@ public class AddMachineController {
 
 
     @FXML
-    void btnSave(ActionEvent event) {
+    void btnSave(ActionEvent event) throws ClassNotFoundException {
      machine_id = txtId.getText();
     String brand = txtBrandName.getText();
 
-        Machine machine = new Machine(machine_id,brand);
 
     if (isValid()) {
         try {
@@ -86,12 +84,12 @@ public class AddMachineController {
     }
 
     @FXML
-    void btnUpdate(ActionEvent event) {
+    void btnUpdate(ActionEvent event) throws ClassNotFoundException {
     String machine_id = txtId.getText();
     String brand = txtBrandName.getText();
 
     if (isValid()) {
-        Machine machine = new Machine(machine_id,brand);
+
         try {
             boolean isUpdated = machineBO.updateMachine(new MachineDTO(machine_id,brand));
             if (isUpdated) {
@@ -100,6 +98,8 @@ public class AddMachineController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
+        MachineTm selectedItem = new MachineTm(machine_id,brand);
+        System.out.println("selectedItem = " + selectedItem);
     }
 
         initialize();
@@ -122,10 +122,25 @@ public class AddMachineController {
         }
     }
 
-    public void initialize() {
+    public void initialize() throws ClassNotFoundException {
         this.machineList = getAllMachines();
         setMachineValue();
         loadMachineTable();
+        generateNewId();
+
+        tblMachine.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+
+            if (newValue != null) {
+                txtId.setText(newValue.getMachine_id());
+                txtBrandName.setText(newValue.getBrand());
+
+                txtId.setDisable(false);
+                txtBrandName.setDisable(false);
+
+            }
+        });
+
     }
 
     private List<MachineDTO> getAllMachines() {
@@ -159,29 +174,16 @@ public class AddMachineController {
         System.out.println("selectedItem = " + tblMachine.getSelectionModel().getSelectedItem());
     }
 
-    private String generateNewId() {
+    private void generateNewId() throws ClassNotFoundException {
         try {
-            //Generate New ID
-            return machineBO.generateMachineNewID();
+            String currentId = machineBO.generateMachineNewID();
+            System.out.println("machineBO eke id ek "+currentId);
+
+            txtId.setText(currentId);
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to generate a new id " + e.getMessage()).show();
+            throw new RuntimeException(e);
         }
 
-
-        if (tblMachine.getItems().isEmpty()) {
-            return "#00-001";
-        } else {
-            String id = getLastMachineId();
-            int newId = Integer.parseInt(id.replace("#", "")) + 1;
-            return String.format("#00-%03d", newId);
-        }
-
-    }
-
-    private String getLastMachineId() {
-        List<MachineTm> tempMachinesList = new ArrayList<>(tblMachine.getItems());
-        Collections.sort(tempMachinesList, (o1, o2) -> o1.getMachine_id().compareTo(o2.getMachine_id()));
-        return tempMachinesList.get(tempMachinesList.size() - 1).getMachine_id();
     }
 
     public void actionsearch(ActionEvent actionEvent) {
