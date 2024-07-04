@@ -1,5 +1,6 @@
 package lk.ijse.cocothumbLayered.bo.custom;
 
+import lk.ijse.cocothumbLayered.bo.SuperBO;
 import lk.ijse.cocothumbLayered.dto.CustomerDTO;
 import lk.ijse.cocothumbLayered.dto.ItemDTO;
 import lk.ijse.cocothumbLayered.dto.OrdersDTO;
@@ -7,7 +8,7 @@ import lk.ijse.cocothumbLayered.dto.OrdersDTO;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface PlaceOrderBO {
+public interface PlaceOrderBO extends SuperBO {
     public CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException ;
     public ItemDTO searchItem(String code) throws SQLException, ClassNotFoundException ;
     public boolean existItem(String code) throws SQLException, ClassNotFoundException;

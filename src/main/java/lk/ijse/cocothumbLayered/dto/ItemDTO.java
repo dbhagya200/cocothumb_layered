@@ -15,6 +15,10 @@ double unit_price_forCompany;
 String stock_qty;
 String user_id;
 
+    public void setStock_qty(String stock_qty) {
+        this.stock_qty = stock_qty;
+    }
+
 
 
 }

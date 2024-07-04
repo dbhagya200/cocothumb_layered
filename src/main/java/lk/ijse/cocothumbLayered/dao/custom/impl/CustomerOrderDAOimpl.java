@@ -2,7 +2,7 @@ package lk.ijse.cocothumbLayered.dao.custom.impl;
 
 import lk.ijse.cocothumbLayered.dao.SQLUtil;
 import lk.ijse.cocothumbLayered.dao.custom.CustomerOrderDAO;
-import lk.ijse.cocothumbLayered.dto.OrdersDTO;
+import lk.ijse.cocothumbLayered.entity.Orders;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ public class CustomerOrderDAOimpl implements CustomerOrderDAO {
 
 
     @Override
-    public boolean add(OrdersDTO entity) throws SQLException {
+    public boolean add(Orders entity) throws SQLException {
         return SQLUtil.execute("INSERT INTO orders(order_id,cust_NIC ,cust_id,user_id,date,) VALUES(?, ?, ?,?,?)",
                 entity.getOrder_id(),entity.getCust_NIC(),
                 entity.getCust_id(),entity.getUser_id(),
@@ -20,17 +20,17 @@ public class CustomerOrderDAOimpl implements CustomerOrderDAO {
     }
 
     @Override
-    public boolean update(OrdersDTO entity) throws SQLException {
+    public boolean update(Orders entity) throws SQLException {
         return false;
     }
 
     @Override
-    public OrdersDTO searchByNIC(String NIC) throws SQLException {
+    public Orders searchByNIC(String NIC) throws SQLException {
         return null;
     }
 
     @Override
-    public OrdersDTO searchById(String id) throws SQLException {
+    public Orders searchById(String id) throws SQLException {
         return null;
     }
 
@@ -40,7 +40,7 @@ public class CustomerOrderDAOimpl implements CustomerOrderDAO {
     }
 
     @Override
-    public List<OrdersDTO> getAll() throws SQLException {
+    public List<Orders> getAll() throws SQLException {
         return null;
     }
 
