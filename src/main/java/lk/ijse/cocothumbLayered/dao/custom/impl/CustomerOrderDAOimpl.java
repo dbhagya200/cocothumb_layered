@@ -51,7 +51,7 @@ public class CustomerOrderDAOimpl implements CustomerOrderDAO {
 
     @Override
     public String generateNewID() throws SQLException {
-        ResultSet rst = SQLUtil.execute("SELECT order_id FROM `Orders` ORDER BY order_id DESC LIMIT 1;");
+        ResultSet rst = SQLUtil.execute("SELECT order_id FROM `orders` ORDER BY order_id DESC LIMIT 1;");
         if (rst.next()) {
             String[] split = rst.getString(1).split("O#");
             int id = Integer.parseInt(split[1],10);

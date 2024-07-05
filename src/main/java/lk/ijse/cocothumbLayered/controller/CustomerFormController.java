@@ -64,7 +64,7 @@ public class CustomerFormController {
     private JFXTextField txtId1;
 
     @FXML
-    private JFXTextField txtNIC;
+    static JFXTextField txtNIC;
 
     @FXML
     private JFXTextField txtName;

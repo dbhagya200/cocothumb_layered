@@ -13,13 +13,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.cocothumb.controller.Util.Regex;
-import lk.ijse.cocothumb.database.dbConnection;
-import lk.ijse.cocothumb.model.*;
-import lk.ijse.cocothumb.model.tModel.CartTm;
-import lk.ijse.cocothumb.repository.*;
 import lk.ijse.cocothumbLayered.bo.BOFactory;
 import lk.ijse.cocothumbLayered.bo.custom.PlaceOrderBO;
+import lk.ijse.cocothumbLayered.controller.Util.Regex;
+import lk.ijse.cocothumbLayered.dto.CustomerDTO;
+import lk.ijse.cocothumbLayered.dto.ItemDTO;
+import lk.ijse.cocothumbLayered.dto.OrdersDTO;
 import lk.ijse.cocothumbLayered.view.tdm.CartTm;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -27,10 +26,13 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+
+import static lk.ijse.cocothumbLayered.controller.CustomerFormController.txtNIC;
+import static lk.ijse.cocothumbLayered.controller.UserFormController.txtUserId;
+import static lk.ijse.cocothumbLayered.db.dbConnection.dbConnection;
 
 public class CustomerOrderFormController {
 
@@ -118,7 +120,7 @@ public class CustomerOrderFormController {
 
 
     @FXML
-    void btnAddToCartOnAction(ActionEvent event) {
+    void btnAddToCartOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
         String item_code = cmbItemCode.getValue();
         int qty = Integer.parseInt(txtQty.getText());
         String description = txtItemType.getText();
@@ -194,50 +196,33 @@ public class CustomerOrderFormController {
 
 
     @FXML
-    void btnPlaceOrder(ActionEvent event) throws IOException {
-        String order_id = txtOrderId.getText();
-        String cust_NIC = cmbCustomerNIC.getValue();
-         cust_id = txtCustId.getText();
-        String user_id = NewLoginController.getUserId();
-        Date date = Date.valueOf(LocalDate.now());
-
-
-        var orders = new Orders(order_id, cust_NIC,cust_id, user_id, date);
-
-
-        List<OrderDetails> odList = new ArrayList<>();
-        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
-            CartTm tm = cartList.get(i);
-
-            OrderDetails OD = new OrderDetails(
-
-                    tm.getItem_code(),
-                    order_id,
-                    tm.getQty(),
-                    tm.getDescription(),
-                    tm.getUnit_price(),
-                    tm.getAmount(),
-                    tm.getPay_method(),
-                    tm.getEmail()
-            );
-            odList.add(OD);
-        }
-
-        PlaceOrder PO = new PlaceOrder(orders, odList);
+    void btnPlaceOrder(ActionEvent event) throws IOException, ClassNotFoundException {
         try {
-            boolean isPlaced = PlaceOrderRepo.placeOrder(PO);
-            if(isPlaced) {
-                new Alert(Alert.AlertType.CONFIRMATION, "order placed!").show();
 
-
+            boolean b = saveOrder(txtOrderId.getText(), txtNIC.getText(),txtCustId.getText(), txtUserId.getText(), lblOrderDate.getValue(), cartList);
+            if (b) {
+                new Alert(Alert.AlertType.INFORMATION, "Order has been placed successfully").show();
             } else {
-                new Alert(Alert.AlertType.WARNING, "order not placed!").show();
+                new Alert(Alert.AlertType.ERROR, "Order has not been placed successfully").show();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
+        generateNewId();
+        cmbCustomerNIC.getSelectionModel().clearSelection();
+        cmbItemCode.getSelectionModel().clearSelection();
+        tblOrderCart.getItems().clear();
+        txtQty.clear();
+        calculateNetTotal();
 
+    }
+
+    public boolean saveOrder(String order_id, String cust_NIC, String cust_id, String user_id, LocalDate order_date, ObservableList<CartTm> orderDetails) throws SQLException, ClassNotFoundException {
+        OrdersDTO orderDTO = new OrdersDTO(order_id, cust_NIC, cust_id, user_id, order_date, orderDetails);
+        return placeOrderBO.placeOrder(orderDTO);
     }
 
     private void calculateNetTotal() {
@@ -263,12 +248,14 @@ public class CustomerOrderFormController {
         String cust_NIC = (String) cmbCustomerNIC.getValue();
 
         try {
-            Customer customer = CustomerRepo.searchByNIC(cust_NIC);
+         CustomerDTO customerDTO = placeOrderBO.searchCustomer(cust_NIC);
 
-            txtCustName.setText(customer.getCust_name());
-            txtCustId.setText(customer.getCust_id());
+            txtCustName.setText(customerDTO.getCust_name());
+            txtCustId.setText(customerDTO.getCust_id());
 
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -278,14 +265,16 @@ public class CustomerOrderFormController {
     String code = (String) cmbItemCode.getValue();
 
     try {
-        Item item = ItemRepo.searchByCode(code);
-        txtItemType.setText(item.getItem_type());
-        txtUnitPrice.setText(String.valueOf(item.getUnit_price()));
-        txtStockQty.setText(item.getStock_qty());
+        ItemDTO itemDTO = placeOrderBO.searchItem(code);
+        txtItemType.setText(itemDTO.getItem_type());
+        txtUnitPrice.setText(String.valueOf(itemDTO.getUnit_price()));
+        txtStockQty.setText(itemDTO.getStock_qty());
     } catch (SQLException e) {
         throw new RuntimeException(e);
+    } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
     }
-    txtQty.requestFocus();
+        txtQty.requestFocus();
     }
 
     public void comboMethod() {
@@ -298,49 +287,39 @@ public class CustomerOrderFormController {
     }
 
     @FXML
-    void txtQtyOnAction(ActionEvent event) {
+    void txtQtyOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
+
         btnAddToCartOnAction(event);
     }
-    public void initialize() {
-        loadNextOrderId();
+    public void initialize() throws ClassNotFoundException, SQLException {
+        generateNewId();
         setCellValueFactory();
         getCustomerNIC();
         getItemCodes();
         comboMethod();
     }
 
-    private  void loadNextOrderId() {
-
+    private void generateNewId() throws ClassNotFoundException {
         try {
-            String currentId = OrderRepo.currentId();
-            String nextId = nextId(currentId);
+            String currentId = placeOrderBO.generateNewOrderID();
+            System.out.println("placeOrderBO eke id ek "+currentId);
 
-            txtOrderId.setText(nextId);
+            txtOrderId.setText(currentId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
 
-    private static String nextId(String currentId) {
-        if (currentId != null) {
-            String[] split = currentId.split("O");
-            int id = Integer.parseInt(split[1],10);
-            return "O" + String.format("%04d", ++id);
-        }
-        return "O0001";
     }
 
 
 
-    private void getCustomerNIC() {
-
-        ObservableList<String> obList = FXCollections.observableArrayList();
+    private void getCustomerNIC() throws SQLException, ClassNotFoundException {
 
         try {
-            List<String> nicList = CustomerRepo.getNIC();
-
-            obList.addAll(nicList);
-            cmbCustomerNIC.setItems(obList);
+            List<CustomerDTO> allCustomers = placeOrderBO.getAllCustomers();
+          for (CustomerDTO c : allCustomers) {
+              cmbCustomerNIC.getItems().add(c.getCust_NIC());
+          }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -348,16 +327,16 @@ public class CustomerOrderFormController {
     }
 
     private void getItemCodes() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-        try {
-            List<String> codeList = ItemRepo.getCodes();
-            for (String code : codeList) {
-                obList.add(code);
-            }
 
-            cmbItemCode.setItems(obList);
+        try {
+            List<ItemDTO> allItems = placeOrderBO.getAllItems();
+         for (ItemDTO i : allItems) {
+             cmbItemCode.getItems().add(i.getItem_code());
+         }
 
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -368,7 +347,7 @@ public class CustomerOrderFormController {
 
 
     @FXML
-    void btnPrintBill(ActionEvent event) throws SQLException, JRException {
+    void btnPrintBill(ActionEvent event) throws SQLException, JRException, ClassNotFoundException {
         JasperDesign jasperDesign =
                 JRXmlLoader.load("src/main/resources/Report/coco_bill.jrxml");
         JasperReport jasperReport =
@@ -401,7 +380,7 @@ public class CustomerOrderFormController {
         cmbMethod.setValue("");
         txtStockQty.setText("");
         tblOrderCart.getItems().clear();
-        loadNextOrderId();
+        generateNewId();
 
         /*JasperDesign jasperDesign =
                 JRXmlLoader.load("src/main/resources/Report/coco_bill.jrxml");
@@ -429,15 +408,15 @@ public class CustomerOrderFormController {
     }
 
     public void txtQtyOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumb.controller.Util.TextField.INT.INT, (JFXTextField) txtQty);
+        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT.INT, (JFXTextField) txtQty);
     }
 
     public void txtEmailOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumb.controller.Util.TextField.email.email, (JFXTextField) txtEmail);
+        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email.email, (JFXTextField) txtEmail);
     }
     public boolean isValid(){
-        if (!Regex.setTextColor(lk.ijse.cocothumb.controller.Util.TextField.INT, (JFXTextField) txtQty)) return false;
-        else if (!Regex.setTextColor(lk.ijse.cocothumb.controller.Util.TextField.email, (JFXTextField) txtEmail)) return false;
+        if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT, (JFXTextField) txtQty)) return false;
+        else if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email, (JFXTextField) txtEmail)) return false;
         return true;
     }
     public void txtQtyOnKeyType(KeyEvent keyEvent) {

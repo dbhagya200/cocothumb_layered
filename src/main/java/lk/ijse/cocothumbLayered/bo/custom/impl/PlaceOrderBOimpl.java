@@ -31,7 +31,7 @@ public class PlaceOrderBOimpl implements PlaceOrderBO {
 
     @Override
     public CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException {
-        Customer c = customerDAO.searchById(id);
+        Customer c = customerDAO.searchByNIC(id);
         return new CustomerDTO(c.getCust_id(), c.getCust_NIC(), c.getCust_name(),
                 c.getCust_address(), c.getCust_contact(), c.getUser_id());
 
@@ -134,6 +134,11 @@ public class PlaceOrderBOimpl implements PlaceOrderBO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public String generateNewOrderID() throws SQLException {
+        return customerOrderDAO.generateNewID();
     }
 
     @Override
