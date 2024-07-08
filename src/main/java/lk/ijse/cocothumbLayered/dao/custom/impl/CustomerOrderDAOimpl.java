@@ -13,7 +13,7 @@ public class CustomerOrderDAOimpl implements CustomerOrderDAO {
 
     @Override
     public boolean add(Orders entity) throws SQLException {
-        return SQLUtil.execute("INSERT INTO orders(order_id,cust_NIC ,cust_id,user_id,date,) VALUES(?, ?, ?,?,?)",
+        return SQLUtil.execute("INSERT INTO orders(order_id,cust_NIC ,cust_id,user_id,date) VALUES(?, ?, ?,?,?)",
                 entity.getOrder_id(),entity.getCust_NIC(),
                 entity.getCust_id(),entity.getUser_id(),
                 entity.getOrder_date());
@@ -51,7 +51,7 @@ public class CustomerOrderDAOimpl implements CustomerOrderDAO {
 
     @Override
     public String generateNewID() throws SQLException {
-        ResultSet rst = SQLUtil.execute("SELECT order_id FROM `orders` ORDER BY order_id DESC LIMIT 1;");
+        ResultSet rst = SQLUtil.execute("SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1;");
         if (rst.next()) {
             String[] split = rst.getString(1).split("O#");
             int id = Integer.parseInt(split[1],10);
@@ -62,7 +62,7 @@ public class CustomerOrderDAOimpl implements CustomerOrderDAO {
 
     @Override
     public boolean exist(String id) throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute("SELECT order_id FROM `Orders` WHERE order_id=?",id);
+        ResultSet rst = SQLUtil.execute("SELECT order_id FROM orders WHERE order_id=?",id);
         return rst.next();
     }
 }

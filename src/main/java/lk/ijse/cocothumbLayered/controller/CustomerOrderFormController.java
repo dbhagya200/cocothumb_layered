@@ -2,7 +2,6 @@ package lk.ijse.cocothumbLayered.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,10 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.cocothumbLayered.bo.BOFactory;
 import lk.ijse.cocothumbLayered.bo.custom.PlaceOrderBO;
-import lk.ijse.cocothumbLayered.controller.Util.Regex;
-import lk.ijse.cocothumbLayered.dto.CustomerDTO;
-import lk.ijse.cocothumbLayered.dto.ItemDTO;
-import lk.ijse.cocothumbLayered.dto.OrdersDTO;
+import lk.ijse.cocothumbLayered.dto.*;
 import lk.ijse.cocothumbLayered.view.tdm.CartTm;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -26,12 +22,11 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-import static lk.ijse.cocothumbLayered.controller.CustomerFormController.txtNIC;
-import static lk.ijse.cocothumbLayered.controller.UserFormController.txtUserId;
 import static lk.ijse.cocothumbLayered.db.dbConnection.dbConnection;
 
 public class CustomerOrderFormController {
@@ -102,11 +97,11 @@ public class CustomerOrderFormController {
     private  TableView<CartTm> tblOrderCart;
 
     public AnchorPane customRoot;
-    private static ObservableList<CartTm> cartList = FXCollections.observableArrayList();
+    private ObservableList<CartTm> cartList = FXCollections.observableArrayList();
     private  double netTotal = 0;
-    private static String cust_id;
+    private  String cust_id;
 
-    public static String getCust_id() {
+    public  String getCust_id() {
         return cust_id;
     }
 
@@ -140,6 +135,7 @@ public class CustomerOrderFormController {
             if(type.orElse(no) == yes) {
                 int selectedIndex = tblOrderCart.getSelectionModel().getSelectedIndex();
                 cartList.remove(selectedIndex);
+                System.out.println("remove = " + cartList);
 
                 tblOrderCart.refresh();
                 calculateNetTotal();
@@ -189,7 +185,8 @@ public class CustomerOrderFormController {
 
         txtQty.setText("");
         txtItemType.setText("");
-        cmbItemCode.setValue("");
+        //cmbItemCode.setValue("");
+        cmbItemCode.getSelectionModel().clearSelection();
         calculateNetTotal();
     }
 
@@ -197,33 +194,52 @@ public class CustomerOrderFormController {
 
     @FXML
     void btnPlaceOrder(ActionEvent event) throws IOException, ClassNotFoundException {
-        try {
+        String order_id = txtOrderId.getText();
+        String cust_NIC = cmbCustomerNIC.getValue();
+        cust_id = txtCustId.getText();
+        String user_id = NewLoginController.getUserId();
+        Date date = Date.valueOf(LocalDate.now());
 
-            boolean b = saveOrder(txtOrderId.getText(), txtNIC.getText(),txtCustId.getText(), txtUserId.getText(), lblOrderDate.getValue(), cartList);
-            if (b) {
-                new Alert(Alert.AlertType.INFORMATION, "Order has been placed successfully").show();
+
+        OrdersDTO orders = new OrdersDTO(order_id, cust_NIC,cust_id, user_id, date);
+
+
+        List<OrderDetailsDTO> odList = new ArrayList<>();
+        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
+            CartTm tm = cartList.get(i);
+
+            OrderDetailsDTO OD = new OrderDetailsDTO(
+
+                    tm.getItem_code(),
+                    order_id,
+                    tm.getQty(),
+                    tm.getDescription(),
+                    tm.getUnit_price(),
+                    tm.getAmount(),
+                    tm.getPay_method(),
+                    tm.getEmail()
+            );
+            odList.add(OD);
+        }
+
+        PlaceOrderDTO PO = new PlaceOrderDTO(orders, odList);
+        try {
+            boolean isPlaced = placeOrderBO.placeOrder(PO);
+            if(isPlaced) {
+                new Alert(Alert.AlertType.CONFIRMATION, "order placed!").show();
+
+
             } else {
-                new Alert(Alert.AlertType.ERROR, "Order has not been placed successfully").show();
+                new Alert(Alert.AlertType.WARNING, "order not placed!").show();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        } catch (ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
-        generateNewId();
-        cmbCustomerNIC.getSelectionModel().clearSelection();
-        cmbItemCode.getSelectionModel().clearSelection();
-        tblOrderCart.getItems().clear();
-        txtQty.clear();
-        calculateNetTotal();
+
 
     }
 
-    public boolean saveOrder(String order_id, String cust_NIC, String cust_id, String user_id, LocalDate order_date, ObservableList<CartTm> orderDetails) throws SQLException, ClassNotFoundException {
-        OrdersDTO orderDTO = new OrdersDTO(order_id, cust_NIC, cust_id, user_id, order_date, orderDetails);
-        return placeOrderBO.placeOrder(orderDTO);
-    }
 
     private void calculateNetTotal() {
         netTotal = 0;
@@ -263,12 +279,14 @@ public class CustomerOrderFormController {
     @FXML
     void cmbItemOnAction(ActionEvent event) throws SQLException {
     String code = (String) cmbItemCode.getValue();
+        System.out.println("code = " + code);
 
     try {
         ItemDTO itemDTO = placeOrderBO.searchItem(code);
         txtItemType.setText(itemDTO.getItem_type());
         txtUnitPrice.setText(String.valueOf(itemDTO.getUnit_price()));
         txtStockQty.setText(itemDTO.getStock_qty());
+        
     } catch (SQLException e) {
         throw new RuntimeException(e);
     } catch (ClassNotFoundException e) {
@@ -408,17 +426,17 @@ public class CustomerOrderFormController {
     }
 
     public void txtQtyOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT.INT, (JFXTextField) txtQty);
+        //Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT.INT, (JFXTextField) txtQty);
     }
 
     public void txtEmailOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email.email, (JFXTextField) txtEmail);
+        //Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email.email, (JFXTextField) txtEmail);
     }
-    public boolean isValid(){
+  /*  public boolean isValid(){
         if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT, (JFXTextField) txtQty)) return false;
         else if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email, (JFXTextField) txtEmail)) return false;
         return true;
-    }
+    }*/
     public void txtQtyOnKeyType(KeyEvent keyEvent) {
         /*if (txtQty.getText().equals(Integer.parseInt(txtStockQty.getText()))) {
             txtQty.setStyle("-fx-border-color: green");

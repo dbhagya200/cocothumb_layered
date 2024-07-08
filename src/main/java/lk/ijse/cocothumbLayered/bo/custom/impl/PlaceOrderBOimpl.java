@@ -6,10 +6,7 @@ import lk.ijse.cocothumbLayered.dao.custom.CustomerDAO;
 import lk.ijse.cocothumbLayered.dao.custom.CustomerOrderDAO;
 import lk.ijse.cocothumbLayered.dao.custom.ItemDAO;
 import lk.ijse.cocothumbLayered.dao.custom.OrderDetailsDAO;
-import lk.ijse.cocothumbLayered.dto.CustomerDTO;
-import lk.ijse.cocothumbLayered.dto.ItemDTO;
-import lk.ijse.cocothumbLayered.dto.OrderDetailsDTO;
-import lk.ijse.cocothumbLayered.dto.OrdersDTO;
+import lk.ijse.cocothumbLayered.dto.*;
 import lk.ijse.cocothumbLayered.entity.Customer;
 import lk.ijse.cocothumbLayered.entity.Item;
 import lk.ijse.cocothumbLayered.entity.OrderDetails;
@@ -38,8 +35,11 @@ public class PlaceOrderBOimpl implements PlaceOrderBO {
     }
 
     @Override
-    public ItemDTO searchItem(String code) throws SQLException, ClassNotFoundException {
+    public ItemDTO searchItem(String code) throws SQLException{
         Item i = itemDAO.searchById(code);
+        if (i == null) {
+            System.out.println("null");
+        }
         return new ItemDTO(i.getItem_code(), i.getItem_type(), i.getUnit_price(),
                 i.getUnit_price_forCompany(), i.getStock_qty(), i.getUser_id());
     }
@@ -82,30 +82,36 @@ public class PlaceOrderBOimpl implements PlaceOrderBO {
     }
 
     @Override
-    public boolean placeOrder(OrdersDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean placeOrder(PlaceOrderDTO dto) throws SQLException, ClassNotFoundException {
+        OrdersDTO order = dto.getOrders();
+        List<OrderDetailsDTO> odList = dto.getOdList();
+
         Connection connection = null;
         try {
             connection = dbConnection.getConnection();
-            if (customerOrderDAO.exist(dto.getOrder_id())) {
+            if (customerOrderDAO.exist(order.getOrder_id())) {
                 return false;
             }
 
             connection.setAutoCommit(false);
 
-            boolean b1 = customerOrderDAO.add(new Orders(dto.getOrder_id(), dto.getCust_NIC(),
-                    dto.getCust_id(), dto.getUser_id(), dto.getOrder_date()));
+            boolean b1 = customerOrderDAO.add(new Orders(order.getOrder_id(), order.getCust_NIC(),
+                    order.getCust_id(), order.getUser_id(), order.getOrder_date()));
+            System.out.println("b1 = " + b1);
 
             if (!b1) {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }
 
-            for (OrderDetailsDTO d : dto.getOrderDetails()) {
+            for (OrderDetailsDTO d : odList) {
                 OrderDetails orderDetails = new OrderDetails(d.getItem_code(), d.getOrder_id(),
                         d.getQty(), d.getDescription(), d.getUnit_price(), d.getAmount(),
                         d.getPay_method(), d.getEmail());
+                System.out.println("orderDetails = " + orderDetails);
 
                 boolean b2 = orderDetailsDAO.add(orderDetails);
+                System.out.println("b2 = " + b2);
                 if (!b2) {
                     connection.rollback();
                     connection.setAutoCommit(true);
@@ -117,6 +123,7 @@ public class PlaceOrderBOimpl implements PlaceOrderBO {
                 boolean b3 = itemDAO.update(new Item(item.getItem_code(), item.getItem_type(),
                         item.getUnit_price(), item.getUnit_price_forCompany(),
                         item.getStock_qty(), item.getUser_id()));
+                System.out.println("b3 = " + b3);
 
                 if (!b3) {
                     connection.rollback();
