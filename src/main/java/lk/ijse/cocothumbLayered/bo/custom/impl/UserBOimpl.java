@@ -22,4 +22,20 @@ public class UserBOimpl implements UserBO {
     public String generateUserNewID() throws SQLException {
         return userDAO.generateNewID();
     }
+
+    @Override
+    public boolean updateUser(UserDTO dto) throws SQLException {
+        return userDAO.update(new User(dto.getUser_id(), dto.getU_name(),
+                dto.getU_password(), dto.getU_email(), dto.getU_role(), dto.getE_id()));
+    }
+
+    @Override
+    public User searchUser(String id) throws SQLException {
+        return userDAO.searchById(id);
+    }
+
+    @Override
+    public User searchUserByUserName(String userName) throws SQLException {
+        return userDAO.searchByName(userName);
+    }
 }

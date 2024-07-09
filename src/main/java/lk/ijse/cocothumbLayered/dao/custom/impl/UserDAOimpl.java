@@ -107,7 +107,7 @@ public class UserDAOimpl implements UserDAO {
 
     @Override
     public User searchByName(String userName) throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT * FROM user WHERE u_name = ?");
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM user WHERE u_name = ?", userName);
 
         User user = null;
 

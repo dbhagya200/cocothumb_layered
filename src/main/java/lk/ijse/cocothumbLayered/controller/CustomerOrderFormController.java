@@ -117,6 +117,7 @@ public class CustomerOrderFormController {
     @FXML
     void btnAddToCartOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
         String item_code = cmbItemCode.getValue();
+        System.out.println("dfghjbngh"+item_code);
         int qty = Integer.parseInt(txtQty.getText());
         String description = txtItemType.getText();
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
@@ -145,9 +146,9 @@ public class CustomerOrderFormController {
 
             if (txtQty.getText().equals(txtStockQty.getText())|| Integer.parseInt(txtQty.getText()) < Integer.parseInt(txtStockQty.getText())) {
 
-                for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
-                    if (item_code.equals(colItemCode.getCellData(i))) {
-                        qty += cartList.get(i).getQty();
+                for (int j = 0; j < tblOrderCart.getItems().size(); j++) {
+                    if (item_code.equals(colItemCode.getCellData(j))) {
+                        qty += cartList.get(j).getQty();
 
                         if (qty > Integer.parseInt(txtStockQty.getText())) {
                             new Alert(Alert.AlertType.ERROR, "Item is out of stock").show();
@@ -156,8 +157,8 @@ public class CustomerOrderFormController {
 
                         amount = unitPrice * qty;
 
-                        cartList.get(i).setQty(qty);
-                        cartList.get(i).setAmount(amount);
+                        cartList.get(j).setQty(qty);
+                        cartList.get(j).setAmount(amount);
 
 
                         initialize();
@@ -166,7 +167,8 @@ public class CustomerOrderFormController {
                         calculateNetTotal();
                         txtQty.setText("");
                         txtItemType.setText("");
-                        cmbItemCode.setValue("");
+                        cmbItemCode.setDisable(false);
+
                         return;
                     }
                 }
@@ -185,8 +187,10 @@ public class CustomerOrderFormController {
 
         txtQty.setText("");
         txtItemType.setText("");
-        //cmbItemCode.setValue("");
-        cmbItemCode.getSelectionModel().clearSelection();
+        cmbItemCode.setDisable(false);
+        //cmbItemCode.getSelectionModel().clearSelection();
+        txtStockQty.setText("");
+        txtUnitPrice.setText("");
         calculateNetTotal();
     }
 
@@ -278,7 +282,7 @@ public class CustomerOrderFormController {
 
     @FXML
     void cmbItemOnAction(ActionEvent event) throws SQLException {
-    String code = (String) cmbItemCode.getValue();
+    String code = cmbItemCode.getValue();
         System.out.println("code = " + code);
 
     try {

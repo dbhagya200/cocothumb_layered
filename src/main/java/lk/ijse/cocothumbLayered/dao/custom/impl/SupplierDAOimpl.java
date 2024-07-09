@@ -31,7 +31,7 @@ public class SupplierDAOimpl implements SupplierDAO {
 
     @Override
     public Supplier searchById(String id) throws SQLException {
-        ResultSet resultSet = SQLUtil.execute("SELECT * FROM supplier  WHERE supp_id = ?");
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM supplier  WHERE supp_id = ?",id);
 
         Supplier supplier = null;
 
