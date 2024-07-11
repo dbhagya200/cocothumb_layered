@@ -276,13 +276,13 @@ if (isValid()){
     }
 
     public void txtNameOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.name.name,txtName);
+        Regex.setTextColor(TextField.name,txtName);
     }
     public void txtAddressOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.address.address,txtAddress);
+        Regex.setTextColor(TextField.address,txtAddress);
     }
     public void txtContactOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.contact.contact,txtContact);
+        Regex.setTextColor(TextField.contact,txtContact);
     }
     public boolean isValid(){
         if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.name,txtName)) return false;

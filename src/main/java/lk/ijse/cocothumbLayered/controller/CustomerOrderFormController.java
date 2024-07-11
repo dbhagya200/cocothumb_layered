@@ -430,7 +430,7 @@ public class CustomerOrderFormController {
     }
 
     public void txtQtyOnKeyReleased(KeyEvent keyEvent) {
-        //Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT.INT, (JFXTextField) txtQty);
+        //Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT,txtQty);
     }
 
     public void txtEmailOnKeyReleased(KeyEvent keyEvent) {

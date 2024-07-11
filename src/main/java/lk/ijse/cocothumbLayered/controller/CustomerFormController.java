@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.cocothumbLayered.bo.BOFactory;
 import lk.ijse.cocothumbLayered.bo.custom.CustomerBO;
 import lk.ijse.cocothumbLayered.controller.Util.Regex;
+import lk.ijse.cocothumbLayered.controller.Util.TextField;
 import lk.ijse.cocothumbLayered.dto.CustomerDTO;
 import lk.ijse.cocothumbLayered.entity.Customer;
 import lk.ijse.cocothumbLayered.view.tdm.CustomerTm;
@@ -64,7 +65,7 @@ public class CustomerFormController {
     private JFXTextField txtId1;
 
     @FXML
-    static JFXTextField txtNIC;
+    private JFXTextField txtNIC;
 
     @FXML
     private JFXTextField txtName;
@@ -114,7 +115,8 @@ public class CustomerFormController {
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
                 }
-                initialize();
+               // initialize();
+                loadCustomerTable();
                 btnClear(event);
 
             } catch (SQLException e) {
@@ -123,8 +125,9 @@ public class CustomerFormController {
                 e.printStackTrace();
             }
         }
-        initialize();
-        btnClear(event);
+       //initialize();
+        loadCustomerTable();
+       btnClear(event);
     }
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
         return customerBO.existCustomer(id);
@@ -148,7 +151,8 @@ public class CustomerFormController {
                 if (isUpdated) {
                     new Alert(Alert.AlertType.CONFIRMATION, "customer updated!").show();
                 }
-                initialize();
+               // initialize();
+                loadCustomerTable();
                 btnClear(event);
 
             } catch (SQLException e) {
@@ -159,7 +163,8 @@ public class CustomerFormController {
             System.out.println("selectedItem = " + selectedItem);
         }
 
-        initialize();
+       // initialize();
+        loadCustomerTable();
         btnClear(event);
 
     }
@@ -198,18 +203,20 @@ public class CustomerFormController {
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer deleted!").show();
             }
-            initialize();
+
+            loadCustomerTable();
             btnClear(event);
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        initialize();
+
+        loadCustomerTable();
         btnClear(event);
     }
     public void initialize() throws ClassNotFoundException, SQLException {
-        this.customerList = customerBO.getAllCustomers();
+        this.customerList = getAllCustomers();
         setCustomerValue();
         loadCustomerTable();
         generateNewId();
@@ -280,25 +287,6 @@ public class CustomerFormController {
         return customerList;
     }
 
-    public void txtCustomerNICOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.NIC.NIC,txtNIC);
-    }
-    public void txtContactOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.contact.contact,txtContact);
-    }
-
-    public boolean isValid(){
-        if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.NIC,txtNIC)) return false;
-        else if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.contact,txtContact)) return false;
-        return true;
-    }
-
-    public void txtNameOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.name.name,txtName);
-    }
-    public void txtAddressOnKeyReleased(KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.address.address,txtAddress);
-    }
     public void actionsearch(ActionEvent actionEvent) {
         String cust_id = txtId1.getText();
 
@@ -318,6 +306,26 @@ public class CustomerFormController {
     }
 
     public void idSearch(ActionEvent actionEvent) {
+    }
+
+    public void txtCustomerNICOnKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.NIC,txtNIC);
+    }
+    public void txtContactOnKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.contact,txtContact);
+    }
+
+    public boolean isValid(){
+        if (!Regex.setTextColor(TextField.NIC,txtNIC)) return false;
+        else if (!Regex.setTextColor(TextField.contact,txtContact)) return false;
+        return true;
+    }
+
+    public void txtNameOnKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.name,txtName);
+    }
+    public void txtAddressOnKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.address,txtAddress);
     }
 }
 

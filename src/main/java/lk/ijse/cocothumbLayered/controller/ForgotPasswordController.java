@@ -49,6 +49,7 @@ UserBO userBO = (UserBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.USER);
         txtEmail.setText("");
         txtUserName.setText("");
         txtOTP.setText("");
+
     }
 
     public void btnCheck(ActionEvent actionEvent) {

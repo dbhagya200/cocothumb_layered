@@ -12,38 +12,37 @@ public class Regex {
         switch (textField){
             case NIC :
                 field = "^([0-9]{9}[x|X|v|V]|[0-9]{12})$";
-            break;
-
+                break;
             case contact :
                 field = "([0-9]{10})$";
-            break;
+                break;
             case qty :
                 field = "^([0-9]{1,3})$";
-            break;
+                break;
             case salary :
                 field = "^([0-9]{1,}[.]([0-9]){1,})$";
-            break;
+                break;
             case name :
                 field = "^[A-z|\\s]{3,}$";
-            break;
+                break;
             case email:
                 field = "^([A-z])([A-z0-9.]){1,}[@]([A-z0-9]){1,10}[.]([A-z]){2,5}$";
-            break;
+                break;
             case address :
                 field = "^([A-z0-9]|[-/,.@+]|\\s){4,}$";
-            break;
+                break;
             case Double:
                 field = "^([0-9]){1,}[.]([0-9]){1,}$";
-            break;
+                break;
             case invoice:
                 field = "^([0-9]){1,}$";
-            break;
+                break;
             case NONE_CHARACTER:
                 field = "^[\\W]{1,}$";
-            break;
+                break;
             case INT:
                 field = "^\\d+$";
-            break;
+                break;
 
         }
         Pattern pattern = Pattern.compile(field);
@@ -75,4 +74,16 @@ public class Regex {
             return false;
         }
     }
+/*    public static boolean setTextColornic(TextField location, String text){
+//        if (Regex.isValidTextField(location,field.getText())){
+//            field.setFocusColor(Paint.valueOf("Green"));
+//            field.setUnFocusColor(Paint.valueOf("Green"));
+//            return true;
+//        }else {
+//            field.setFocusColor(Paint.valueOf("Red"));
+//            field.setUnFocusColor(Paint.valueOf("Red"));
+//            return false;
+//        }
+        return Regex.isValidTextField(location,text);
+    }*/
 }
