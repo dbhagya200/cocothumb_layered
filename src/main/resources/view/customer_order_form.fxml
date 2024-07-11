@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -134,7 +135,6 @@
          </font>
       </Label>
       <JFXComboBox fx:id="cmbMethod" layoutX="644.0" layoutY="252.0" prefHeight="35.0" prefWidth="377.0" promptText="Payment Type" AnchorPane.rightAnchor="77.0" />
-      <TextField fx:id="txtEmail" layoutX="642.0" layoutY="167.0" onKeyReleased="#txtEmailOnKeyReleased" onKeyTyped="#txtEmailOnKeyType" prefHeight="35.0" prefWidth="377.0" AnchorPane.rightAnchor="79.0" AnchorPane.topAnchor="167.0" />
       <ImageView fitHeight="27.0" fitWidth="26.0" layoutX="827.0" layoutY="528.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../asserts.icon/online-shop.png" />
@@ -145,5 +145,6 @@
             <Image url="@../asserts.icon/bill.png" />
          </image>
       </ImageView>
+      <JFXTextField fx:id="txtEmail" layoutX="645.0" layoutY="163.0" onKeyReleased="#txtEmailOnKeyReleased" prefHeight="35.0" prefWidth="377.0" AnchorPane.rightAnchor="77.0" />
    </children>
 </AnchorPane>

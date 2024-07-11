@@ -2,6 +2,7 @@ package lk.ijse.cocothumbLayered.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.cocothumbLayered.bo.BOFactory;
 import lk.ijse.cocothumbLayered.bo.custom.PlaceOrderBO;
+import lk.ijse.cocothumbLayered.controller.Util.Regex;
 import lk.ijse.cocothumbLayered.dto.*;
 import lk.ijse.cocothumbLayered.view.tdm.CartTm;
 import net.sf.jasperreports.engine.*;
@@ -35,7 +37,8 @@ public class CustomerOrderFormController {
     public AnchorPane rootNode4;
     public TableColumn colMethod;
     public JFXComboBox cmbMethod;
-    public TextField txtEmail;
+    @FXML
+    private JFXTextField txtEmail;
     public JFXButton bttnPlaseOrder;
     @FXML
     private  TextField txtCustId;
@@ -143,7 +146,7 @@ public class CustomerOrderFormController {
             }
         });
 
-
+if (isValid()){
             if (txtQty.getText().equals(txtStockQty.getText())|| Integer.parseInt(txtQty.getText()) < Integer.parseInt(txtStockQty.getText())) {
 
                 for (int j = 0; j < tblOrderCart.getItems().size(); j++) {
@@ -172,7 +175,7 @@ public class CustomerOrderFormController {
                         return;
                     }
                 }
-
+            }
                     CartTm cartTm = new CartTm(item_code,  qty,description, unitPrice, amount,pay_method,email, btnRemove);
 
                     cartList.add(cartTm);
@@ -434,13 +437,14 @@ public class CustomerOrderFormController {
     }
 
     public void txtEmailOnKeyReleased(KeyEvent keyEvent) {
-        //Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email.email, (JFXTextField) txtEmail);
+        Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email,txtEmail);
     }
-  /*  public boolean isValid(){
-        if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT, (JFXTextField) txtQty)) return false;
-        else if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email, (JFXTextField) txtEmail)) return false;
+    public boolean isValid(){
+       /* if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.INT, (JFXTextField) txtQty)) return false;
+        else */
+            if (!Regex.setTextColor(lk.ijse.cocothumbLayered.controller.Util.TextField.email,txtEmail)) return false;
         return true;
-    }*/
+    }
     public void txtQtyOnKeyType(KeyEvent keyEvent) {
         /*if (txtQty.getText().equals(Integer.parseInt(txtStockQty.getText()))) {
             txtQty.setStyle("-fx-border-color: green");
